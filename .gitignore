@@ -80,3 +80,12 @@ venv.bak/
 credentials.json
 *.pem
 *.key
+
+# Frontend artifacts
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+
+# Frontend
+/frontend/node_modules/
+/frontend/dist/
