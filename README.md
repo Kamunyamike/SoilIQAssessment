@@ -45,19 +45,54 @@ The backend listens on `http://0.0.0.0:5000` by default and supports deployment 
 ## Deploy the backend for lovable.app
 `https://soiliqassessment.lovable.app/` is currently live, but its `/assess` endpoint is not yet connected to your backend. Deploy the Flask app to a public HTTPS host and configure the lovable frontend to use that backend.
 
-For full deployment steps, see `README_DEPLOY.md`.
-
-1. Deploy the backend to a public host such as Railway, Render, Fly.io, or another cloud provider.
-2. Set these environment variables on the host:
-   - `NEO4J_URI=bolt://localhost:7687` or your Neo4j connection string
+### Deploy on Vercel using Docker
+1. Connect the GitHub repository to Vercel.
+   - In Vercel, click "New Project" and import your `SoilIQAssessment` repository.
+2. Keep the project root as the repository root so Vercel can use `Dockerfile` and `vercel.json`.
+3. In Vercel project settings, add these environment variables:
+   - `NEO4J_URI=bolt://<host>:7687`
    - `NEO4J_USER=neo4j`
    - `NEO4J_PASSWORD=<your_password>`
-   - Optional: `AZURE_TRANSLATOR_KEY`, `AZURE_TRANSLATOR_REGION`
-3. Confirm the backend is reachable via HTTPS.
-4. Configure the lovable frontend to point at your deployed backend URL.
-   - If the lovable app supports an environment variable, use `VITE_BACKEND_URL=https://your-backend-host`.
-   - If it has a settings panel, enter the deployed backend address there.
-   - If it supports a runtime JavaScript variable, set `window.__BACKEND_URL__` or `window.BACKEND_URL` to your backend URL.
+   - `TRANSLATOR_API_KEY=<your_translator_api_key>` (or `AZURE_TRANSLATOR_KEY`)
+   - `TRANSLATOR_REGION=<your_translator_region>` (or `AZURE_TRANSLATOR_REGION`)
+   - `FLASK_ENV=production`
+   - `PORT=5000`
+4. Deploy the project. Vercel builds the Docker image and publishes a public URL such as `https://soil-iq.vercel.app`.
+
+### Verify the deployed backend
+```bash
+curl -X POST https://your-vercel-url/assess \
+  -H "Content-Type: application/json" \
+  -d '{"farmer":"Alice","location":"Nakuru","soil_color":"dark brown","soil_texture":"loamy","compaction":"firm","pH":5.4,"organic_matter":2.8,"moisture":22,"lang":"sw","latitude":-0.3031,"longitude":36.0800}'
+```
+
+### Configure production environment variables
+Use `.env.production` locally or as a reference for Vercel configuration:
+```bash
+NEO4J_URI=bolt://localhost:7687
+NEO4J_USER=neo4j
+NEO4J_PASSWORD=your_password_here
+TRANSLATOR_API_KEY=your_translator_api_key_here
+TRANSLATOR_REGION=your_translator_region_here
+FLASK_ENV=production
+PORT=5000
+```
+
+### Lovable frontend integration
+If lovable.app supports runtime JSON config, use this backend URL:
+```json
+{
+  "backend_url": "https://soil-iq.vercel.app/assess"
+}
+```
+If lovable supports a runtime JS override, add:
+```html
+<script>
+  window.__BACKEND_URL__ = "https://soil-iq.vercel.app/assess";
+</script>
+```
+
+> Note: The frontend also supports a base backend domain, such as `https://soil-iq.vercel.app`. If you use the full `/assess` endpoint in `window.__BACKEND_URL__`, the UI will call it directly.
 
 For production builds, create a `frontend/.env.production` file with:
 ```bash

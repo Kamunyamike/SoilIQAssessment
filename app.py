@@ -5,16 +5,20 @@ import re
 import requests
 import uuid
 
+from dotenv import load_dotenv
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from neo4j import GraphDatabase
+
+load_dotenv(".env.production")
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
 logging.basicConfig(level=logging.INFO)
 
-AZURE_TRANSLATOR_KEY = os.getenv("AZURE_TRANSLATOR_KEY")
-AZURE_TRANSLATOR_REGION = os.getenv("AZURE_TRANSLATOR_REGION")
+AZURE_TRANSLATOR_KEY = os.getenv("AZURE_TRANSLATOR_KEY", os.getenv("TRANSLATOR_API_KEY"))
+AZURE_TRANSLATOR_REGION = os.getenv("AZURE_TRANSLATOR_REGION", os.getenv("TRANSLATOR_REGION"))
 AZURE_TRANSLATOR_ENDPOINT = os.getenv(
     "AZURE_TRANSLATOR_ENDPOINT",
     "https://api.cognitive.microsofttranslator.com",
@@ -629,5 +633,5 @@ def assess():
 
 if __name__ == "__main__":
     host = os.getenv("FLASK_RUN_HOST", "0.0.0.0")
-    port = int(os.getenv("FLASK_RUN_PORT", "5000"))
+    port = int(os.getenv("FLASK_RUN_PORT", os.getenv("PORT", "5000")))
     app.run(host=host, port=port, debug=True)
