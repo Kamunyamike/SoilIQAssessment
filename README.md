@@ -45,6 +45,8 @@ The backend listens on `http://0.0.0.0:5000` by default and supports deployment 
 ## Deploy the backend for lovable.app
 `https://soiliqassessment.lovable.app/` is currently live, but its `/assess` endpoint is not yet connected to your backend. Deploy the Flask app to a public HTTPS host and configure the lovable frontend to use that backend.
 
+For full deployment steps, see `README_DEPLOY.md`.
+
 1. Deploy the backend to a public host such as Railway, Render, Fly.io, or another cloud provider.
 2. Set these environment variables on the host:
    - `NEO4J_URI=bolt://localhost:7687` or your Neo4j connection string

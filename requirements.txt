@@ -3,3 +3,4 @@ Flask-Cors==4.0.0
 neo4j==6.2.0
 requests==2.31.0
 googletrans==4.0.0-rc1
+gunicorn==21.2.0
