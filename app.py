@@ -92,7 +92,7 @@ def assess_soil():
             lang=lang
         )
 
-    # Return recommendation in farmer’s language if available
+    # Return recommendation in the farmer’s language if available
     if recommendation_translated:
         return jsonify({"recommendation": recommendation_translated})
     else:
