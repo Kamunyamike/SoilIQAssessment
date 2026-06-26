@@ -43,9 +43,12 @@ function App() {
     try {
       const runtimeBackendUrl =
         window?.__BACKEND_URL__ || window?.BACKEND_URL || window?.REACT_APP_BACKEND_URL;
-      const backendUrl =
+      const backendBaseUrl =
         import.meta.env.VITE_BACKEND_URL || runtimeBackendUrl || 'http://127.0.0.1:5000';
-      const res = await fetch(`${backendUrl}/assess`, {
+      const backendUrl = backendBaseUrl.endsWith('/assess')
+        ? backendBaseUrl
+        : `${backendBaseUrl.replace(/\/+$|\s+$/g, '')}/assess`;
+      const res = await fetch(backendUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
