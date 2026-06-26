@@ -41,7 +41,10 @@ function App() {
     setLoading(true);
 
     try {
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://127.0.0.1:5000';
+      const runtimeBackendUrl =
+        window?.__BACKEND_URL__ || window?.BACKEND_URL || window?.REACT_APP_BACKEND_URL;
+      const backendUrl =
+        import.meta.env.VITE_BACKEND_URL || runtimeBackendUrl || 'http://127.0.0.1:5000';
       const res = await fetch(`${backendUrl}/assess`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

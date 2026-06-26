@@ -55,6 +55,12 @@ The backend listens on `http://0.0.0.0:5000` by default and supports deployment 
 4. Configure the lovable frontend to point at your deployed backend URL.
    - If the lovable app supports an environment variable, use `VITE_BACKEND_URL=https://your-backend-host`.
    - If it has a settings panel, enter the deployed backend address there.
+   - If it supports a runtime JavaScript variable, set `window.__BACKEND_URL__` or `window.BACKEND_URL` to your backend URL.
+
+For production builds, create a `frontend/.env.production` file with:
+```bash
+VITE_BACKEND_URL=https://your-backend-host
+```
 
 If `https://soiliqassessment.lovable.app/` still shows the default placeholder, update the deployed frontend configuration to point to the backend URL and then test the `/assess` route with curl or Postman.
 
