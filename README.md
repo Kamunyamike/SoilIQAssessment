@@ -7,8 +7,8 @@ SoilIQ provides a Flask backend that accepts farmer inputs, soil observations, o
 ## Setup Instructions
 ### Clone the repository
 ```bash
-git clone https://github.com/your-org/soilIQ.git
-cd soilIQ
+git clone https://github.com/Kamunyamike/SoilIQAssessment.git
+cd SoilIQAssessment
 ```
 
 ### Install dependencies
@@ -43,17 +43,20 @@ python app.py
 The backend listens on `http://0.0.0.0:5000` by default and supports deployment hosts.
 
 ## Deploy the backend for lovable.app
-If you want `https://soiliqassessment.lovable.app/` to use this backend, deploy the Flask app to a public URL and configure the lovable frontend to point at it.
+`https://soiliqassessment.lovable.app/` is currently live, but its `/assess` endpoint is not yet connected to your backend. Deploy the Flask app to a public HTTPS host and configure the lovable frontend to use that backend.
 
-1. Deploy the backend to a public host such as Railway, Render, or Fly.io.
+1. Deploy the backend to a public host such as Railway, Render, Fly.io, or another cloud provider.
 2. Set these environment variables on the host:
    - `NEO4J_URI=bolt://localhost:7687` or your Neo4j connection string
    - `NEO4J_USER=neo4j`
    - `NEO4J_PASSWORD=<your_password>`
    - Optional: `AZURE_TRANSLATOR_KEY`, `AZURE_TRANSLATOR_REGION`
 3. Confirm the backend is reachable via HTTPS.
-4. In `https://soiliqassessment.lovable.app/`, set the backend base URL to your deployed backend address.
-   If the lovable app supports an environment variable, use the same pattern as `VITE_BACKEND_URL`.
+4. Configure the lovable frontend to point at your deployed backend URL.
+   - If the lovable app supports an environment variable, use `VITE_BACKEND_URL=https://your-backend-host`.
+   - If it has a settings panel, enter the deployed backend address there.
+
+If `https://soiliqassessment.lovable.app/` still shows the default placeholder, update the deployed frontend configuration to point to the backend URL and then test the `/assess` route with curl or Postman.
 
 ## Frontend Setup
 ### Install frontend dependencies
